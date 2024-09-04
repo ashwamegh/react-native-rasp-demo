@@ -1,182 +1,154 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import * as React from 'react';
 
-import React, {useEffect, useState} from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Button,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
+import {Platform} from 'react-native';
 import {useFreeRasp} from 'freerasp-react-native';
 import {APP_TEAM_ID, WATCHER_EMAIL, CERTIFICATE_HASHES} from '@env';
 
-const RaspConfig = {
-  androidConfig: {
-    packageName: 'com.awesomeproject',
-    certificateHashes: [CERTIFICATE_HASHES],
-    // supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
-  },
-  iosConfig: {
-    appBundleId: 'com.awesomeproject',
-    appTeamId: APP_TEAM_ID,
-  },
-  watcherMail: WATCHER_EMAIL,
-  isProd: true,
-};
+import {DemoApp} from './src/DemoApp';
+import {commonChecks, iosChecks, androidChecks} from './src/checks';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const App = () => {
+  const [appChecks, setAppChecks] = React.useState([
+    ...commonChecks,
+    ...(Platform.OS === 'ios' ? iosChecks : androidChecks),
+  ]);
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): JSX.Element {
-  const [isInsecure, setIsInsecure] = useState();
+  const RaspConfig = {
+    androidConfig: {
+      packageName: 'com.awesomeproject',
+      certificateHashes: [CERTIFICATE_HASHES],
+      // supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
+    },
+    iosConfig: {
+      appBundleId: 'com.awesomeproject',
+      appTeamId: APP_TEAM_ID,
+    },
+    watcherMail: WATCHER_EMAIL,
+    isProd: true,
+  };
 
   const actions = {
     // Android & iOS
     privilegedAccess: () => {
-      console.log('privilegedAccess');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Privileged Access'
+            ? {...threat, status: 'nok'}
+            : threat,
+        ),
+      );
     },
     // Android & iOS
     debug: () => {
-      console.log('debug');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Debug' ? {...threat, status: 'nok'} : threat,
+        ),
+      );
     },
     // Android & iOS
     simulator: () => {
-      console.log('simulator');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Simulator' ? {...threat, status: 'nok'} : threat,
+        ),
+      );
     },
     // Android & iOS
     appIntegrity: () => {
-      console.log('appIntegrity');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'App Integrity' ? {...threat, status: 'nok'} : threat,
+        ),
+      );
     },
     // Android & iOS
     unofficialStore: () => {
-      console.log('unofficialStore');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Unofficial Store'
+            ? {...threat, status: 'nok'}
+            : threat,
+        ),
+      );
     },
     // Android & iOS
     hooks: () => {
-      console.log('hooks');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Hooks' ? {...threat, status: 'nok'} : threat,
+        ),
+      );
     },
     // Android & iOS
     deviceBinding: () => {
-      console.log('deviceBinding');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Device Binding'
+            ? {...threat, status: 'nok'}
+            : threat,
+        ),
+      );
     },
     // Android & iOS
     secureHardwareNotAvailable: () => {
-      console.log('secureHardwareNotAvailable');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Secure Hardware Not Available'
+            ? {...threat, status: 'nok'}
+            : threat,
+        ),
+      );
     },
     // Android & iOS
     systemVPN: () => {
-      console.log('systemVPN');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'System VPN' ? {...threat, status: 'nok'} : threat,
+        ),
+      );
     },
-    //Android & iOS
+    // Android & iOS
     passcode: () => {
-      console.log('passcode');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Passcode' ? {...threat, status: 'nok'} : threat,
+        ),
+      );
     },
     // iOS only
     deviceID: () => {
-      console.log('deviceID');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Device ID' ? {...threat, status: 'nok'} : threat,
+        ),
+      );
     },
     // Android only
     obfuscationIssues: () => {
-      console.log('obfuscationIssues');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Obfuscation Issues'
+            ? {...threat, status: 'nok'}
+            : threat,
+        ),
+      );
     },
     // Android only
     devMode: () => {
-      console.log('devMode');
+      setAppChecks(currentState =>
+        currentState.map(threat =>
+          threat.name === 'Developer Mode'
+            ? {...threat, status: 'nok'}
+            : threat,
+        ),
+      );
     },
   };
 
-  console.log('isSafe: ', useFreeRasp(RaspConfig, actions));
+  useFreeRasp(RaspConfig, actions);
 
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}></View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+  return <DemoApp checks={appChecks} />;
+};
 
 export default App;

@@ -6,3 +6,7 @@ declare module '@env' {
   export const WATCHER_EMAIL: string;
   export const CERTIFICATE_HASHES: string;
 }
+declare module '*.png' {
+  const value: any;
+  export default value;
+}
