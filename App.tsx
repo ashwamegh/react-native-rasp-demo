@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -76,6 +76,71 @@ function Section({children, title}: SectionProps): JSX.Element {
 
 function App(): JSX.Element {
   const [isInsecure, setIsInsecure] = useState();
+
+  const actions = {
+    // Android & iOS
+    privilegedAccess: () => {
+      console.log('privilegedAccess');
+    },
+    // Android & iOS
+    debug: () => {
+      console.log('debug');
+    },
+    // Android & iOS
+    simulator: () => {
+      console.log('simulator');
+    },
+    // Android & iOS
+    appIntegrity: () => {
+      console.log('appIntegrity');
+    },
+    // Android & iOS
+    unofficialStore: () => {
+      console.log('unofficialStore');
+    },
+    // Android & iOS
+    hooks: () => {
+      console.log('hooks');
+    },
+    // Android & iOS
+    deviceBinding: () => {
+      console.log('deviceBinding');
+    },
+    // Android & iOS
+    secureHardwareNotAvailable: () => {
+      console.log('secureHardwareNotAvailable');
+    },
+    // Android & iOS
+    systemVPN: () => {
+      console.log('systemVPN');
+    },
+    //Android & iOS
+    passcode: () => {
+      console.log('passcode');
+    },
+    // iOS only
+    deviceID: () => {
+      console.log('deviceID');
+    },
+    // Android only
+    obfuscationIssues: () => {
+      console.log('obfuscationIssues');
+    },
+    // Android only
+    devMode: () => {
+      console.log('devMode');
+    },
+  };
+
+  const config = {
+    androidConfig: {
+      packageName: 'com.awesomeproject',
+      certificateHashes: ['+sYXRdwJA3hvue3mKpYrOZ9zSPC7b4mbgzJmdZEDO5w='],
+    },
+    isProd: true,
+  };
+
+  console.log('isSafe: ', useFreeRasp(config, actions));
 
   const isDarkMode = useColorScheme() === 'dark';
 
