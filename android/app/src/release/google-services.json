@@ -1,0 +1,23 @@
+{
+  "project_info": {
+    "project_number": "1234567898760",
+    "project_id": "reactnativerazorpaycheckoutdemo",
+    "storage_bucket": "example.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "9:99999999:android:9ccdbb6c1ae659b8",
+        "android_client_info": {
+          "package_name": "com.awesomeproject"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyA87yHvfYhzdtIgTLasDfgrEpImYFr6Pijmd8"
+        }
+      ]
+    }
+  ],
+  "configuration_version": "1"
+}

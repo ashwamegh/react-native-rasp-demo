@@ -1,0 +1,115 @@
+diff --git a/node_modules/react-native-tab-view/src/PagerViewAdapter.tsx b/node_modules/react-native-tab-view/src/PagerViewAdapter.tsx
+index 6d894a5..f4873f5 100644
+--- a/node_modules/react-native-tab-view/src/PagerViewAdapter.tsx
++++ b/node_modules/react-native-tab-view/src/PagerViewAdapter.tsx
+@@ -66,7 +66,12 @@ export default function PagerViewAdapter<T extends Route>({
+       );
+ 
+       if (animationEnabled) {
+-        pagerRef.current?.setPage(index);
++        // pagerRef.current?.setPage(index);
++        if (typeof pagerRef.current?.setPage !== 'function' && typeof pagerRef.current?.getNode === 'function') {
++          pagerRef.current?.getNode().setPage(index);
++        } else {
++          pagerRef.current?.setPage(index);
++        }
+       } else {
+         pagerRef.current?.setPageWithoutAnimation(index);
+         position.setValue(index);
+@@ -82,7 +87,12 @@ export default function PagerViewAdapter<T extends Route>({
+ 
+     if (indexRef.current !== index) {
+       if (animationEnabled) {
+-        pagerRef.current?.setPage(index);
++        // pagerRef.current?.setPage(index);
++        if (typeof pagerRef.current?.setPage !== 'function' && typeof pagerRef.current?.getNode === 'function') {
++          pagerRef.current?.getNode().setPage(index);
++        } else {
++          pagerRef.current?.setPage(index);
++        }
+       } else {
+         pagerRef.current?.setPageWithoutAnimation(index);
+         position.setValue(index);
+diff --git a/node_modules/react-native-tab-view/src/PlatformPressable.tsx b/node_modules/react-native-tab-view/src/PlatformPressable.tsx
+index 552127c..731965e 100644
+--- a/node_modules/react-native-tab-view/src/PlatformPressable.tsx
++++ b/node_modules/react-native-tab-view/src/PlatformPressable.tsx
+@@ -1,5 +1,5 @@
+ import * as React from 'react';
+-import { Platform, Pressable, PressableProps } from 'react-native';
++import { Platform, TouchableOpacity, PressableProps } from 'react-native';
+ 
+ export type Props = PressableProps & {
+   pressColor?: string;
+@@ -26,7 +26,7 @@ export default function PlatformPressable({
+   ...rest
+ }: Props) {
+   return (
+-    <Pressable
++    <TouchableOpacity
+       android_ripple={
+         ANDROID_SUPPORTS_RIPPLE
+           ? { color: pressColor, ...android_ripple }
+diff --git a/node_modules/react-native-tab-view/src/TabBarIndicator.tsx b/node_modules/react-native-tab-view/src/TabBarIndicator.tsx
+index 46322a8..be92f9d 100644
+--- a/node_modules/react-native-tab-view/src/TabBarIndicator.tsx
++++ b/node_modules/react-native-tab-view/src/TabBarIndicator.tsx
+@@ -11,6 +11,7 @@ import {
+ 
+ import type { Route, SceneRendererProps, NavigationState } from './types';
+ import useAnimatedValue from './useAnimatedValue';
++import {View} from "../../../src/styles/styles";
+ 
+ export type GetTabWidth = (index: number) => number;
+ 
+@@ -133,7 +134,14 @@ export default function TabBarIndicator<T extends Route>({
+         width === 'auto' ? { opacity: opacity } : null,
+         style,
+       ]}
+-    />
++    >
++      <View style={styles.indicatorLeft}>
++        <View style={styles.indicatorLeftInner}/>
++      </View>
++      <View style={styles.indicatorRight}>
++        <View style={styles.indicatorRightInner}/>
++      </View>
++    </Animated.View>
+   );
+ }
+ 
+@@ -146,4 +154,34 @@ const styles = StyleSheet.create({
+     right: 0,
+     height: 2,
+   },
++  indicatorLeft: {
++    position: 'absolute',
++    width: 12,
++    height: 12,
++    bottom: 0,
++    left: -12,
++    backgroundColor: 'white'
++  },
++  indicatorLeftInner: {
++    position: 'absolute',
++    width: 12,
++    height: 12,
++    backgroundColor: '#FF7B05',
++    borderBottomRightRadius: 50
++  },
++  indicatorRight: {
++    position: 'absolute',
++    width: 12,
++    height: 12,
++    bottom: 0,
++    right: -12,
++    backgroundColor: 'white'
++  },
++  indicatorRightInner: {
++    position: 'absolute',
++    width: 12,
++    height: 12,
++    backgroundColor: '#FF7B05',
++    borderBottomLeftRadius: 50
++  }
+ });
