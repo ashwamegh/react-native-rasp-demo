@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -25,6 +25,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import {useFreeRasp} from 'freerasp-react-native';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -58,6 +60,8 @@ function Section({children, title}: SectionProps): JSX.Element {
 }
 
 function App(): JSX.Element {
+  const [isInsecure, setIsInsecure] = useState();
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {

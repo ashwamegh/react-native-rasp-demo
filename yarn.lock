@@ -4501,6 +4501,11 @@ formik@^2.2.9:
     tiny-warning "^1.0.2"
     tslib "^2.0.0"
 
+freerasp-react-native@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.npmjs.org/freerasp-react-native/-/freerasp-react-native-3.8.1.tgz"
+  integrity sha512-prCujqtxs3WfjTPTS8+CGsYAb20RaEd/H8txJN9JkkYxtxklb83MHbl4iFGcigh5OFiR2QE7obs0tXM8YuW3Wg==
+
 fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.npmjs.org/fresh/-/fresh-0.5.2.tgz"
