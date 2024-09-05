@@ -17,23 +17,25 @@ const App = () => {
   ]);
 
   useEffect(() => {
-    RASPModule.checkSecurity()
-      .then((result: string) => {
-        console.log('Security check result:', result);
-        if (result === 'Rooted') {
-          setAppChecks(currentState =>
-            currentState.map(threat =>
-              threat.name === 'Securevale root check'
-                ? {...threat, status: 'nok'}
-                : threat,
-            ),
-          );
-        }
-        // Handle the result (EmulatorFound, DebuggerEnabled, Rooted, or Secure)
-      })
-      .catch((error: any) => {
-        console.error('Error during security check:', error);
-      });
+    if (Platform.OS === 'android') {
+      RASPModule.checkSecurity()
+        .then((result: string) => {
+          console.log('Security check result:', result);
+          if (result === 'Rooted') {
+            setAppChecks(currentState =>
+              currentState.map(threat =>
+                threat.name === 'Securevale root check'
+                  ? {...threat, status: 'nok'}
+                  : threat,
+              ),
+            );
+          }
+          // Handle the result (EmulatorFound, DebuggerEnabled, Rooted, or Secure)
+        })
+        .catch((error: any) => {
+          console.error('Error during security check:', error);
+        });
+    }
   }, []);
 
   const RaspConfig = {
