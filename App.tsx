@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
+import {NativeModules} from 'react-native';
 
 import {Platform} from 'react-native';
 import {useFreeRasp} from 'freerasp-react-native';
@@ -7,11 +8,33 @@ import {APP_TEAM_ID, WATCHER_EMAIL, CERTIFICATE_HASHES} from '@env';
 import {DemoApp} from './src/DemoApp';
 import {commonChecks, iosChecks, androidChecks} from './src/checks';
 
+const {RASPModule} = NativeModules;
+
 const App = () => {
-  const [appChecks, setAppChecks] = React.useState([
+  const [appChecks, setAppChecks] = useState([
     ...commonChecks,
     ...(Platform.OS === 'ios' ? iosChecks : androidChecks),
   ]);
+
+  useEffect(() => {
+    RASPModule.checkSecurity()
+      .then((result: string) => {
+        console.log('Security check result:', result);
+        if (result === 'Rooted') {
+          setAppChecks(currentState =>
+            currentState.map(threat =>
+              threat.name === 'Securevale root check'
+                ? {...threat, status: 'nok'}
+                : threat,
+            ),
+          );
+        }
+        // Handle the result (EmulatorFound, DebuggerEnabled, Rooted, or Secure)
+      })
+      .catch((error: any) => {
+        console.error('Error during security check:', error);
+      });
+  }, []);
 
   const RaspConfig = {
     androidConfig: {

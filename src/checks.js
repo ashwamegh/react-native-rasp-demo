@@ -9,6 +9,7 @@ export const commonChecks = [
   {name: 'System VPN', status: 'ok'},
   {name: 'Device Binding', status: 'ok'},
   {name: 'Unofficial Store', status: 'ok'},
+  {name: 'Securevale root check', status: 'ok'},
 ];
 
 export const iosChecks = [{name: 'Device ID', status: 'ok'}];
